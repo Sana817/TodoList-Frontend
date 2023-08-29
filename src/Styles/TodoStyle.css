@@ -1,0 +1,92 @@
+.outer {
+  background-image: linear-gradient(45deg, #17a2b8, #3a82ab);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.inner {
+  width: 50%;
+
+  min-width: 450px;
+  background-color: #ffffff;
+  margin: auto;
+  padding: 20px;
+  box-shadow: 2px 2px 10px rgba(22, 22, 22, 0.2);
+  display: block;
+}
+.addItems {
+  width: 100%;
+  border: 2px solid #f0f0f0;
+  padding: 10px 5px;
+  font-size: 20px;
+}
+h1 {
+  color: #0014f8;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 900;
+  margin: 26.8px;
+  font-family: "Times New Roman", Times, serif;
+}
+#todoList {
+  width: 100%;
+  border: 2px solid #f0f0f0;
+  padding: 10px 5px;
+  font-size: 20px;
+}
+ul {
+  list-style: none;
+  margin: 0%;
+  padding: 0%;
+}
+li {
+  list-style-type: none;
+  text-align: left;
+  position: relative;
+  font-size: 1rem;
+  padding: 16px 16px 16px 0;
+  border-bottom: 1px solid black;
+}
+
+.del {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+.edit {
+  position: absolute;
+  right: 50px;
+  top: 20px;
+  cursor: pointer;
+}
+input[type="checkbox" i] {
+  background-color: initial;
+  cursor: default;
+  appearance: auto;
+  box-sizing: border-box;
+  margin: 3px 3px 3px 4px;
+  padding: initial;
+  border: initial;
+  vertical-align: sub;
+}
+span {
+  vertical-align: middle;
+  font-family: "Times New Roman", Times, serif;
+}
+
+@media only screen and (max-width: 600px) {
+  div.outer {
+    margin-left: -67px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  div.inner {
+    width: 60%;
+    /* margin-left: -218px; */
+  }
+}
