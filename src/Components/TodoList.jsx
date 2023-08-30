@@ -11,26 +11,48 @@ function TodoList() {
   const todoListController = taskHandler(useTaskState());
   const [todoList, setTodoList] = useState([]);
   const [task, setTask] = useState(initialTaskValues);
-
-  useEffect(() => {
-    const fetchTodoList = async () => {
+  const fetchTodoList = async () => {
+    try {
       const fetchedTasks = await todoListController.getTasks();
       setTodoList(fetchedTasks);
-    };
+    } catch (error) {
+      console.log("Error in fetching tasks", error);
+    }
+  };
+  useEffect(() => {
     fetchTodoList();
-  }, [todoListController]);
+  }, []);
 
   const handleRemoveTask = async (taskId) => {
     try {
       await todoListController.removeTask(taskId);
+      fetchTodoList();
     } catch (error) {
       console.error("Error removing task:", error);
     }
   };
 
-  const handleUpdateTask = async (newTask) => {
+  const handleEditTask = async (newTask) => {
     try {
       await todoListController.updateTask(newTask);
+      setTask(initialTaskValues);
+      fetchTodoList();
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleUpdateTask = async (newTask) => {
+    try {
+      const taskExists = todoList.some(
+        (prevTask) => prevTask.task.toLowerCase() === newTask.task.toLowerCase()
+      );
+
+      if (taskExists) {
+        alert("Task already exists in todo list");
+      } else {
+        handleEditTask(newTask);
+      }
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -39,13 +61,14 @@ function TodoList() {
   const handleKeyDown = async (event) => {
     if (event.key === "Enter" && task.task.trim() !== "") {
       const taskExists = todoList.some(
-        (prevTask) => prevTask.task === task.task
+        (prevTask) => prevTask.task.toLowerCase() === task.task.toLowerCase()
       );
       if (taskExists) {
         alert("Task already exists in todo list");
       } else {
         await todoListController.addTask(task);
         setTask(initialTaskValues);
+        fetchTodoList();
       }
     }
   };
@@ -76,6 +99,7 @@ function TodoList() {
               <TodoTask
                 key={task._id}
                 task={task}
+                editTask={handleEditTask}
                 updateTask={handleUpdateTask}
                 removeTask={handleRemoveTask}
               ></TodoTask>

@@ -34,7 +34,7 @@ function TodoTask(props) {
         className="fa fa-pencil-square-o edit"
         aria-hidden="true"
         onClick={() =>
-          props.updateTask({ ...props.task, editing: !props.task.editing })
+          props.editTask({ ...props.task, editing: !props.task.editing })
         }
       ></i>
       <i
