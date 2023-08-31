@@ -3,14 +3,22 @@ import "../Styles/TodoStyle.css";
 import TodoTask from "./TodoTask";
 import { taskHandler, useTaskState } from "../Controller/TodoListController";
 
-function TodoList() {
-  const initialTaskValues = {
+interface InitialTaskValues {
+  _id: string;
+  task: string;
+  editing: boolean;
+}
+
+const TodoList: React.FC = () => {
+  const initialValues: InitialTaskValues = {
+    _id: "",
     task: "",
     editing: false,
   };
   const todoListController = taskHandler(useTaskState());
-  const [todoList, setTodoList] = useState([]);
-  const [task, setTask] = useState(initialTaskValues);
+  const todoListArray: InitialTaskValues[] = [];
+  const [todoList, setTodoList] = useState(todoListArray);
+  const [task, setTask] = useState(initialValues);
   const fetchTodoList = async () => {
     try {
       const fetchedTasks = await todoListController.getTasks();
@@ -23,7 +31,7 @@ function TodoList() {
     fetchTodoList();
   }, []);
 
-  const handleRemoveTask = async (taskId) => {
+  const handleRemoveTask = async (taskId: string) => {
     try {
       await todoListController.removeTask(taskId);
       fetchTodoList();
@@ -32,17 +40,17 @@ function TodoList() {
     }
   };
 
-  const handleEditTask = async (newTask) => {
+  const handleEditTask = async (newTask: InitialTaskValues) => {
     try {
       await todoListController.updateTask(newTask);
-      setTask(initialTaskValues);
+      setTask(initialValues);
       fetchTodoList();
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
 
-  const handleUpdateTask = async (newTask) => {
+  const handleUpdateTask = async (newTask: InitialTaskValues) => {
     try {
       const taskExists = todoList.some(
         (prevTask) => prevTask.task.toLowerCase() === newTask.task.toLowerCase()
@@ -58,7 +66,7 @@ function TodoList() {
     }
   };
 
-  const handleKeyDown = async (event) => {
+  const handleKeyDown = async (event: any) => {
     if (event.key === "Enter" && task.task.trim() !== "") {
       const taskExists = todoList.some(
         (prevTask) => prevTask.task.toLowerCase() === task.task.toLowerCase()
@@ -67,13 +75,13 @@ function TodoList() {
         alert("Task already exists in todo list");
       } else {
         await todoListController.addTask(task);
-        setTask(initialTaskValues);
+        setTask(initialValues);
         fetchTodoList();
       }
     }
   };
 
-  const onChange = (event) => {
+  const onChange = (event: any) => {
     setTask({ ...task, task: event.target.value });
   };
 
@@ -109,6 +117,6 @@ function TodoList() {
       </div>
     </>
   );
-}
+};
 
 export default TodoList;

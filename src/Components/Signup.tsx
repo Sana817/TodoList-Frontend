@@ -3,17 +3,24 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { taskHandler, useTaskState } from "../Controller/TodoListController";
+import React from "react";
 
-const Signup = () => {
+interface InitialTaskValues {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const Signup: React.FC = () => {
   const controller = taskHandler(useTaskState());
   const navigate = useNavigate();
-  const initialValues = {
+  const initialValues: InitialTaskValues = {
     userName: "",
     email: "",
     password: "",
     confirmPassword: "",
   };
-
   const userValidation = yup.object().shape({
     userName: yup
       .string()
@@ -34,10 +41,10 @@ const Signup = () => {
     confirmPassword: yup
       .string()
       .required("Confirm password is required")
-      .oneOf([yup.ref("password"), null], 'Must match "password" field value'),
+      .oneOf([yup.ref("password"), ""], 'Must match "password" field value'),
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: InitialTaskValues) => {
     try {
       const res = await controller.signup(values);
       if (res) {
@@ -50,6 +57,7 @@ const Signup = () => {
 
   const formik = useFormik({
     initialValues,
+
     validationSchema: userValidation,
     onSubmit,
   });

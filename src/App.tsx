@@ -1,10 +1,10 @@
+import React from "react";
 import TodoList from "./Components/TodoList";
 import "../src/Styles/TodoStyle.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
-
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
@@ -14,6 +14,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
