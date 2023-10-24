@@ -1,14 +1,17 @@
 import React from "react";
 import "../Styles/TodoStyle.css";
-
+import { ListItem, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 function TodoTask(props) {
   return (
-    <li>
+    <ListItem>
       {props.task.editing ? (
-        <input
-          type="text"
-          defaultValue={props.task.task}
-          name="task"
+        <TextField
+          variant="outlined"
+          label={props.task.task}
+          id="task"
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               props.updateTask({
@@ -20,31 +23,25 @@ function TodoTask(props) {
           }}
         />
       ) : (
-        <>
-          <input
-            type="checkbox"
-            defaultChecked={props.task.editing}
-            id="checkboxInput"
-          />
-          <span>{props.task.task}</span>
-        </>
+        <FormControlLabel control={<Checkbox />} label={props.task.task} />
       )}
-
-      <i
-        className="fa fa-pencil-square-o edit"
-        aria-hidden="true"
+      <IconButton
+        aria-label="Edit"
         onClick={() =>
           props.editTask({ ...props.task, editing: !props.task.editing })
         }
-      ></i>
-      <i
-        className="fa fa-trash del"
-        aria-hidden="true"
+      >
+        <EditIcon />
+      </IconButton>
+      <IconButton
+        aria-label="Delete"
         onClick={() => {
           props.removeTask(props.task._id);
         }}
-      ></i>
-    </li>
+      >
+        <DeleteIcon />
+      </IconButton>
+    </ListItem>
   );
 }
 

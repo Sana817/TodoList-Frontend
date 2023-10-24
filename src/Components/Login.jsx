@@ -1,5 +1,14 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import * as React from "react";
+import {
+  Button,
+  Stack,
+  TextField,
+  Divider,
+  Typography,
+  Container,
+  FormHelperText,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { taskHandler, useTaskState } from "../Controller/TodoListController";
@@ -29,6 +38,7 @@ const Login = () => {
   const onSubmit = async (values) => {
     try {
       const res = await controller.login(values);
+
       if (res) {
         localStorage.setItem("user-authentication", res);
         navigate("/todoList");
@@ -47,61 +57,72 @@ const Login = () => {
   });
 
   return (
-    <div className="container inner" style={{ marginTop: "30px" }}>
+    <Container
+      sx={{
+        width: 500,
+        height: 500,
+        paddingTop: "24px",
+        border: "2px solid #0d6efd",
+        borderRadius: "50px",
+      }}
+      alignItems={"center"}
+    >
       <form onSubmit={formik.handleSubmit}>
-        <h1>Login</h1>
-        <hr />
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <div className="text-danger">{formik.errors.email}</div>
-          )}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="exampleInputPassword1"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <div className="text-danger">{formik.errors.password}</div>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          disabled={!formik.isValid}
-        >
+        <Typography variant="h3" align="center" color={"primary"}>
           Login
-        </button>
+        </Typography>
+        <Divider variant="middle" />
 
-        <NavLink
-          className="btn btn-primary"
-          style={{ marginLeft: "10px" }}
-          to="/signup"
-        >
-          Signup
-        </NavLink>
+        <TextField
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          variant="outlined"
+          type="email"
+          margin="normal"
+          size="small"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+
+        {formik.touched.email && formik.errors.email && (
+          <FormHelperText id="my-helper-text" error>
+            {formik.errors.email}
+          </FormHelperText>
+        )}
+
+        <TextField
+          required
+          fullWidth
+          id="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          size="small"
+          margin="normal"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.password && formik.errors.password && (
+          <FormHelperText id="my-helper-text" error>
+            {formik.errors.password}
+          </FormHelperText>
+        )}
+
+        <Stack direction="row" spacing={2}>
+          <Button type="submit" variant="contained" disabled={!formik.isValid}>
+            Login
+          </Button>
+
+          <Button variant="outlined" href="/signup" to="/signup">
+            Signup
+          </Button>
+        </Stack>
       </form>
-    </div>
+    </Container>
   );
 };
 
