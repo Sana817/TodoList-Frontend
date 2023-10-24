@@ -4,13 +4,14 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { taskHandler, useTaskState } from "../Controller/TodoListController";
 
-const Login = () => {
+interface InitialUserValues {
+  userName: string;
+  email: string;
+  password: string;
+}
+const Login: React.FC = () => {
   const controller = taskHandler(useTaskState());
   const navigate = useNavigate();
-  const initialValues = {
-    email: "",
-    password: "",
-  };
 
   const userValidation = yup.object().shape({
     email: yup
@@ -26,7 +27,7 @@ const Login = () => {
       ),
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: InitialUserValues) => {
     try {
       const res = await controller.login(values);
       if (res) {
@@ -41,7 +42,7 @@ const Login = () => {
   };
 
   const formik = useFormik({
-    initialValues,
+    initialValues: { userName: "", email: "", password: "" },
     validationSchema: userValidation,
     onSubmit,
   });

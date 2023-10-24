@@ -1,7 +1,18 @@
 import React from "react";
 import "../Styles/TodoStyle.css";
 
-function TodoTask(props) {
+interface InitialTaskValues {
+  _id: string;
+  task: string;
+  editing: boolean;
+}
+interface TodoTaskProps {
+  task: InitialTaskValues;
+  updateTask: (task: InitialTaskValues) => void;
+  editTask: (task: InitialTaskValues) => void;
+  removeTask: (taskID: string) => void;
+}
+const TodoTask: React.FC<TodoTaskProps> = (props) => {
   return (
     <li>
       {props.task.editing ? (
@@ -9,11 +20,11 @@ function TodoTask(props) {
           type="text"
           defaultValue={props.task.task}
           name="task"
-          onKeyDown={(e) => {
+          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === "Enter") {
               props.updateTask({
                 ...props.task,
-                task: e.target.value,
+                task: (e.target as HTMLInputElement).value,
                 editing: !props.task.editing,
               });
             }
@@ -46,6 +57,6 @@ function TodoTask(props) {
       ></i>
     </li>
   );
-}
+};
 
 export default TodoTask;
